@@ -108,3 +108,5 @@ venv.bak/
 
 # Ignore for erxsyslog
 logs/
+
+settings.json

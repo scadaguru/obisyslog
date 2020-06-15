@@ -9,7 +9,7 @@ syslog: # SYSLOG details
 
 home-assistant: # Home Assistant access details to send obihai information
     url: http://192.168.1.77:8123 # Home Assistant URL/IP, no slash (/) at the end
-    password: home # Home Assistant password
+    access_token: home # Home Assistant access token
     show_history: 10 # show how many last call history in HA
 
 obihai: # Obihai device details

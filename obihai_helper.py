@@ -191,8 +191,7 @@ class ObihaiHelper:
     def update_ha_sensor(self, entity, state_str, attributes):
         self.print(self.log_level_debug, "ObihaiHelper:uhs(): enter")
         try:
-            base_url_post = self.config["home-assistant"]["url"] + "/api/states/" + entity + "?api_password=" + \
-                            self.config["home-assistant"]["password"]
+            base_url_post = self.config["home-assistant"]["url"] + "/api/states/" + entity
             # for safety reason don't print following debug information as it may contain sensitive information
             # for users who has public facing Home Assistant
             # self.print(self.log_level_debug, "ObihaiHelper:uhs(): url: " + base_url_post)
@@ -200,7 +199,8 @@ class ObihaiHelper:
             payload = {"state": state_str, "attributes": attributes}
             self.print(self.log_level_info, "ObihaiHelper:uhs(): payload: " + str(json.dumps(payload)))
 
-            response = post(base_url_post, data=json.dumps(payload))
+            headers = {'Authorization': "Bearer " + self.config["home-assistant"]["access_token"]}
+            response = post(base_url_post, data=json.dumps(payload), headers=headers)
             self.print(self.log_level_info, "ObihaiHelper:uhs(): response: " + str(response.text))
         except Exception as e:
             self.print(self.log_level_error, "ObihaiHelper:uhs():Exception:" + str(e))
@@ -209,13 +209,12 @@ class ObihaiHelper:
     def ha_service_notify(self, whom, message):
         self.print(self.log_level_debug, "ObihaiHelper:hsn(): enter")
         try:
-            base_url_post = self.config["home-assistant"]["url"] + "/api/services/" + whom + "?api_password=" + \
-                            self.config["home-assistant"]["password"]
-
+            base_url_post = self.config["home-assistant"]["url"] + "/api/services/notify" + whom
             payload = {"message": message}
             self.print(self.log_level_info, "ObihaiHelper:hsn(): payload: " + str(json.dumps(payload)))
 
-            response = post(base_url_post, data=json.dumps(payload))
+            headers = {'Authorization': "Bearer " + self.config["home-assistant"]["access_token"]}
+            response = post(base_url_post, data=json.dumps(payload), headers=headers)
             self.print(self.log_level_info, "ObihaiHelper:hsn(): response: " + str(response.text))
         except Exception as e:
             self.print(self.log_level_error, "ObihaiHelper:uhs():Exception:" + str(e))
@@ -251,10 +250,12 @@ class ObihaiHelper:
 
         caller_name = ""
         try:
+            invalid_value = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
             base_url = self.config["opencnam"]["base_url"]
             sid = self.config["opencnam"]["sid"]
             token = self.config["opencnam"]["token"]
-            if base_url != "" and sid != "" and token != "":
+            if (base_url != "" and sid != "" and token != "" 
+                    and invalid_value not in sid and invalid_value not in token):
                 phone_number = phone_number.replace('(', '')
                 phone_number = phone_number.replace(')', '')
                 phone_number = phone_number.replace('-', '')

@@ -56,7 +56,7 @@ Syslog for Obihai phone device
 
     home-assistant section has the details of your running Home Assistant to send the device tracking information.
         url: http://192.168.1.77:8123 # This is your Home Assistant URL/IP without slash (/) at the end
-        password: home # This is your Home Assistant password
+        access_token: home # This is your Home Assistant access token
         show_history: 10 # show how many last calls history in HA
         Home Assistant Entity Names:
             sensor.obihai_reboot_required
@@ -115,4 +115,4 @@ Syslog for Obihai phone device
               Line #12 to 
                 - .:/config # Folder name where you have config file
             And then run the command (you may have to run with sudo) 
-              docker-compose up -d
+              docker docker-compose up -d
